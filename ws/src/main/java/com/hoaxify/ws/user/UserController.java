@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,8 @@ public class UserController {
 	UserService userService;
 
 	@PostMapping("/api/1.0/users")
-	public GenericResponse createUser(@Valid @RequestBody User user) {
+	public GenericResponse createUser(@Valid @RequestBody User user, @RequestHeader(value="Accept-Language") String language) {
+	    System.out.println(language);
 		userService.save(user);
 		return new GenericResponse("user created");
 	}

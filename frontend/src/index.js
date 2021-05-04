@@ -4,14 +4,17 @@ import './index.css';
 import './bootsrap-override.scss';
 import App from './App';
 import UserSignupPage from './pages/UserSignupPage';
+import LoginPage from './pages/LoginPage'
 import reportWebVitals from './reportWebVitals';
 import './i18n'
+import LanguageSelector from './components/LanguageSelector'
 
 ReactDOM.render(
-  <React.StrictMode>
+<div>
     <UserSignupPage />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <LanguageSelector />
+</div>, 
+document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

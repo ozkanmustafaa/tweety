@@ -27,11 +27,15 @@ onClickLogin = async event => {
         username: username,
         password: password
     };
+
+    const {push} = this.props.history;
+
     this.setState({
         error: null
-    })
+    });
     try{
         await login(creds);
+        push('/');
     }
     catch(apiError){
         this.setState({

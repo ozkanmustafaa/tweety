@@ -8,7 +8,7 @@ useEffect(() => {
     let requestInterceptor, responseInterceptor;
 
     const updateApiCallFor = (url, inProgress) => {
-        if(url == apiPath){
+        if(url.startsWith(apiPath)){
             setPendingApiCall(inProgress);
         }
     }
@@ -38,7 +38,7 @@ useEffect(() => {
     return function unmount(){
         unregisterInterceptors();
     }
-});
+},[]);
 
     return pendingApiCall;
 }

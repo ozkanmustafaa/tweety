@@ -12,6 +12,7 @@ export const loginSuccess = (authState) => {
         type: ACTIONS.LOGIN_SUCCESS,
         payload: authState
         };
+        
 };
 
 export const loginHandler = (credentials) => {

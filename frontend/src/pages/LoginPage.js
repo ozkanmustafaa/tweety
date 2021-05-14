@@ -13,6 +13,8 @@ const LoginPage = (props) => {
 
     const dispatch = useDispatch();
 
+
+    // username ya da password değiştiğinde statedeki erroru undefined yap.
     useEffect(() => {
         setError(undefined)
     }, [username, password])

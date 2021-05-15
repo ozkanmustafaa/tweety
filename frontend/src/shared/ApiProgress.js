@@ -38,7 +38,7 @@ useEffect(() => {
     return function unmount(){
         unregisterInterceptors();
     }
-},[]);
+},[apiPath]);
 
     return pendingApiCall;
 }

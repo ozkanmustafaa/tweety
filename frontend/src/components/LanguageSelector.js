@@ -13,7 +13,7 @@ const {i18n} = useTranslation();
     return (
     <div className="container">
         <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/TR.svg" height="50px" width="50px" alt="Turkish Flag" onClick={() => onChangeLanguage('tr')} style={{cursor: 'pointer'}}></img>
-        <img src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" height="50px" width="50px" alt="USA Flag" onClick={() => onChangeLanguage('en')} style={{cursor: 'pointer'}}></img>
+        <img className="ml-1" src="https://purecatamphetamine.github.io/country-flag-icons/3x2/US.svg" height="50px" width="50px" alt="USA Flag" onClick={() => onChangeLanguage('en')} style={{cursor: 'pointer'}}></img>
     </div>
     );
 };

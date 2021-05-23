@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import ProfileImageWithDefault from './ProfileImageWithDefault';
 import { useTranslation } from 'react-i18next';
 import Input from './Input';
 import {updateUser} from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import ButtonWithProgress from './ButtonWithProgress';
+import {updateSuccess} from '../redux/authActions';
 
 const ProfileCard = props => {
     const [inEditMode, setInEditMode] = useState(false);
@@ -17,6 +18,8 @@ const ProfileCard = props => {
     const [user, setUser] = useState({})
     const [editable, setEditable] = useState(false);
     const [newImage, setNewImage] = useState();
+    const [validationErrors, setValidationErrors] = useState({});
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setUser(props.user)
@@ -25,6 +28,22 @@ const ProfileCard = props => {
     useEffect(() => {
         setEditable(pathUsername == loggedInUsername)
     }, [pathUsername, loggedInUsername])
+
+    useEffect(() => {
+        setValidationErrors((previousValidationErrors) => ({
+            ... previousValidationErrors,
+            displayName: undefined
+            })
+        );
+    }, [updatedDisplayName])
+
+    useEffect(() => {
+        setValidationErrors((previousValidationErrors) => ({
+            ... previousValidationErrors,
+            image: undefined
+            })
+        );
+    }, [newImage])
 
     const {username, displayName, image} = user;
     const {t} = useTranslation();
@@ -39,11 +58,10 @@ const ProfileCard = props => {
     }, [inEditMode, displayName])
 
     const onClickSave = async () => {
-
-    let image;
-    if(newImage){
-        image = newImage.split(',')[1]
-    }
+        let image;
+        if(newImage){
+            image = newImage.split(',')[1]
+        }
 
         const body = {
             displayName: updatedDisplayName,
@@ -53,7 +71,10 @@ const ProfileCard = props => {
             const response = await updateUser(username, body);
             setInEditMode(false);
             setUser(response.data);
-        } catch (error) {}
+            dispatch(updateSuccess(response.data));
+        } catch (error) {
+            setValidationErrors(error.response.data.validationErrors)
+        }
     }
 
     const onChangeFile = (event) => {
@@ -70,6 +91,7 @@ const ProfileCard = props => {
     }
 
     const pendingApiCall = useApiProgress('put', '/api/1.0/users/' + username)
+    const{displayName: displayNameError, image: imageError} = validationErrors;
 
     return <div className="card text-center">
         <div className="card-header">
@@ -96,9 +118,8 @@ const ProfileCard = props => {
             )}
             {inEditMode &&(
                 <div> 
-                    <Input label={t("Change Display Name")} defaultValue={displayName} onChange={(event) => {setUpdatedDisplayName(event.target.value)}} />
-                    <input type="file" onChange={onChangeFile}>
-                    </input>
+                    <Input label={t("Change Display Name")} defaultValue={displayName} onChange={(event) => {setUpdatedDisplayName(event.target.value)}} error={displayNameError} />
+                    <Input type="file" onChange={onChangeFile} error={imageError} />
                     <div> 
                         <ButtonWithProgress 
                             className="btn btn-primary d-inline-flex" 

@@ -1,3 +1,4 @@
+import { act } from 'react-dom/test-utils';
 import * as ACTIONS from './Constants'
 
 const defaultState = {
@@ -16,6 +17,11 @@ const authReducer = (state = {... defaultState}, action) => {
         return {
             ... action.payload,
             isLoggedIn: true
+        }
+    }
+    else if (action.type == ACTIONS.UPDATE_SUCCESS){
+        return {
+            ... state, ... action.payload
         }
     }
     return state;

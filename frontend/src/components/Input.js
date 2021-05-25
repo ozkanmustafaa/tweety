@@ -16,7 +16,7 @@ const Input = (props) => {
         <div className = "mb-3">
         <label>{label}</label>
         <input className={className} name={name} onChange={onChange} type={type} defaultValue={defaultValue}/>
-        <div id="validationServer03Feedback" className="invalid-feedback">{error}</div>
+        <div className="invalid-feedback">{error}</div>
     </div>
     )
 }

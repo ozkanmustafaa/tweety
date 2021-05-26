@@ -22,7 +22,9 @@ i18n.use(initReactI18next).init({
                 'Change Display Name': 'Change Display Name',
                 Save: 'Save',
                 Cancel: 'Cancel',
-                'My Profile': 'My Profile'
+                'My Profile': 'My Profile',
+                'There are no tweeties': 'There are no tweeties',
+                'Load old tweeties': 'Load old tweeties'
             }
         },
         tr: {
@@ -44,7 +46,9 @@ i18n.use(initReactI18next).init({
                 'Change Display Name': 'Görünür İsminizi Değiştirin',
                 Save: 'Kaydet',
                 Cancel: 'İptal Et',
-                'My Profile': 'Hesabım'
+                'My Profile': 'Hesabım',
+                'There are no tweeties': 'Tweety bulunamadı',
+                'Load old tweeties': 'Eski tweetyleri getir'
             }
         }
     },

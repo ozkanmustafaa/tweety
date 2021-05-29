@@ -4,11 +4,16 @@ import {getTweeties} from '../api/apiCalls';
 import { useApiProgress } from '../shared/ApiProgress';
 import Spinner from './Spinner';
 import TweetyView from './TweetyView';
+import { useParams } from 'react-router';
+
 
 const TweetyFeed = () => {
     const [tweetyPage, setTweetyPage] = useState({ content: [], last: true, number: 0});
     const {t} = useTranslation();
-    const pendingApiCall = useApiProgress('get', '/api/1.0/tweeties')
+    const {username} = useParams();
+
+    const path = username ? `/api/1.0/users/${username}/tweeties/?page=` : '/api/1.0/tweeties/?page=';
+    const pendingApiCall = useApiProgress('get', path)
 
     useEffect(() => {
         loadTweeties();
@@ -17,7 +22,7 @@ const TweetyFeed = () => {
     
     const loadTweeties = async (page) => {
         try{
-            const response = await getTweeties(page);
+            const response = await getTweeties(username, page);
             setTweetyPage(previousTweetyPage => ({
                 ... response.data,
                 content: [... previousTweetyPage.content, ... response.data.content]

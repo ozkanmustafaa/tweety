@@ -5,6 +5,7 @@ import { useParams } from 'react-router';
 import {useTranslation} from 'react-i18next';
 import {useApiProgress} from '../shared/ApiProgress';
 import Spinner from '../components/Spinner';
+import TweetyFeed from '../components/TweetyFeed';
 
 const UserPage = () => {
     const [user, setUser] = useState({});
@@ -14,7 +15,7 @@ const UserPage = () => {
 
     const {t} = useTranslation();
 
-    const pendingApiCall = useApiProgress('get', '/api/1.0/users/' + username);
+    const pendingApiCall = useApiProgress('get', '/api/1.0/users/' + username, true);
 
     useEffect(() => {
         setNotFound(false)
@@ -32,12 +33,6 @@ const UserPage = () => {
         loadUser();
     }, [username]);
 
-if(pendingApiCall){
-    return (
-        <Spinner />
-    )
-}
-
     if(notFound){
         return(
             <div className="container">
@@ -51,10 +46,23 @@ if(pendingApiCall){
             </div>
         )
     }
+    
+    if(pendingApiCall || user.username != username){
+        return (
+            <Spinner />
+        )
+    }
 
     return (
         <div className="container">
-            <ProfileCard user={user}/>
+            <div className="row">
+                <div className="col">
+                    <ProfileCard user={user} />
+                </div>
+                <div className="col">
+                    <TweetyFeed />
+                </div>
+            </div>
         </div>);
 };
 

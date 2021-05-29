@@ -38,6 +38,7 @@ export const postTweety = (tweety) => {
     return axios.post('/api/1.0/tweeties/', tweety);
 }
 
-export const getTweeties = (page = 0) => {
-    return axios.get('/api/1.0/tweeties/?page=' + page);
+export const getTweeties = (username, page = 0) => {
+    const path = username ? `/api/1.0/users/${username}/tweeties/?page=` : '/api/1.0/tweeties/?page=';
+    return axios.get( path + page);
 }

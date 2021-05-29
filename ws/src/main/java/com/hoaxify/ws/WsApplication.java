@@ -28,11 +28,11 @@ public class WsApplication {
 				user.setDisplayName("display"+i);
 				user.setPassword("P4ssword");
 				userService.save(user);
-			}
-			for(int i = 1; i <= 50; i++) {
-				Tweety tweety = new Tweety();
-				tweety.setContent("Tweety - " + i);
-				tweetyService.save(tweety);
+				for(int j = 1; j <= 2; j++) {
+					Tweety tweety = new Tweety();
+					tweety.setContent("Tweety  (" + j + ") from user (" + i + ")");
+					tweetyService.save(tweety, user);
+				}
 			}
 		};
 	}

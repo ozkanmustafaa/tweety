@@ -42,3 +42,18 @@ export const getTweeties = (username, page = 0) => {
     const path = username ? `/api/1.0/users/${username}/tweeties/?page=` : '/api/1.0/tweeties/?page=';
     return axios.get( path + page);
 }
+
+export const getOldTweeties = (id, username) => {
+    const path = username ? `/api/1.0/users/${username}/tweeties/${id}` : `/api/1.0/tweeties/${id}`;
+    return axios.get(path);
+}
+
+export const getNewTweetyCount = (id, username) => {
+    const path = username ? `/api/1.0/users/${username}/tweeties/${id}?count=true` : `/api/1.0/tweeties/${id}?count=true`;
+    return axios.get(path);
+}
+
+export const getNewTweeties = (id, username) => {
+    const path = username ? `/api/1.0/users/${username}/tweeties/${id}?direction=after` : `/api/1.0/tweeties/${id}?direction=after`;
+    return axios.get(path);
+}

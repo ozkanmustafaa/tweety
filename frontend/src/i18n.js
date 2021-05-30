@@ -25,7 +25,8 @@ i18n.use(initReactI18next).init({
                 Cancel: 'Cancel',
                 'My Profile': 'My Profile',
                 'There are no tweeties': 'There are no tweeties',
-                'Load old tweeties': 'Load old tweeties'
+                'Load old tweeties': 'Load old tweeties',
+                'There are new tweeties': 'There are new tweeties'
             }
         },
         tr: {
@@ -49,7 +50,8 @@ i18n.use(initReactI18next).init({
                 Cancel: 'İptal Et',
                 'My Profile': 'Hesabım',
                 'There are no tweeties': 'Tweety bulunamadı',
-                'Load old tweeties': 'Eski tweetyleri getir'
+                'Load old tweeties': 'Eski tweetyleri getir',
+                'There are new tweeties': 'Yeni tweetyler var'
             }
         }
     },

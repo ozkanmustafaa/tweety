@@ -28,7 +28,7 @@ public class WsApplication {
 				user.setDisplayName("display"+i);
 				user.setPassword("P4ssword");
 				userService.save(user);
-				for(int j = 1; j <= 2; j++) {
+				for(int j = 1; j <= 20; j++) {
 					Tweety tweety = new Tweety();
 					tweety.setContent("Tweety  (" + j + ") from user (" + i + ")");
 					tweetyService.save(tweety, user);

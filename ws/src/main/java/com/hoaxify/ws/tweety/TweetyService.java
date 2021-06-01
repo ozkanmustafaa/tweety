@@ -2,6 +2,7 @@ package com.hoaxify.ws.tweety;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import com.hoaxify.ws.file.FileAttachment;
+import com.hoaxify.ws.file.FileAttachmentRepository;
+import com.hoaxify.ws.tweety.vm.TweetySubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
 
@@ -17,17 +21,27 @@ public class TweetyService {
 	
 	TweetyRepository tweetyRepository;
 	UserService userService;
+	FileAttachmentRepository fileAttachmentRepository;
 	
-	public TweetyService(TweetyRepository tweetyRepository, UserService userService) {
+	public TweetyService(TweetyRepository tweetyRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
 		super();
 		this.tweetyRepository = tweetyRepository;
 		this.userService = userService;
+		this.fileAttachmentRepository = fileAttachmentRepository;
 	}
 
-	public void save(Tweety tweety, User user) {
+	public void save(TweetySubmitVM tweetySubmitVM, User user) {
+		Tweety tweety = new Tweety();
+		tweety.setContent(tweetySubmitVM.getContent());
 		tweety.setTimestamp(new Date());
 		tweety.setUser(user);
 		tweetyRepository.save(tweety);
+		Optional<FileAttachment> optionalFileAttachment = fileAttachmentRepository.findById(tweetySubmitVM.getAttachmentId());
+		if(optionalFileAttachment.isPresent()) {
+			FileAttachment fileAttachment = optionalFileAttachment.get();
+			fileAttachment.setTweety(tweety);
+			fileAttachmentRepository.save(fileAttachment);
+		}
 	}
 
 	public Page<Tweety> getTweeties(Pageable page) {

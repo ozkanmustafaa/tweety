@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 
 import com.hoaxify.ws.tweety.Tweety;
 import com.hoaxify.ws.tweety.TweetyService;
+import com.hoaxify.ws.tweety.vm.TweetySubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
 
@@ -29,7 +30,7 @@ public class WsApplication {
 				user.setPassword("P4ssword");
 				userService.save(user);
 				for(int j = 1; j <= 20; j++) {
-					Tweety tweety = new Tweety();
+					TweetySubmitVM tweety = new TweetySubmitVM();
 					tweety.setContent("Tweety  (" + j + ") from user (" + i + ")");
 					tweetyService.save(tweety, user);
 				}

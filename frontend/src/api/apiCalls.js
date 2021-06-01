@@ -57,3 +57,7 @@ export const getNewTweeties = (id, username) => {
     const path = username ? `/api/1.0/users/${username}/tweeties/${id}?direction=after` : `/api/1.0/tweeties/${id}?direction=after`;
     return axios.get(path);
 }
+
+export const postTweetyAttachment = (attachment) => {
+    return axios.post('/api/1.0/tweety-attachments', attachment);
+}

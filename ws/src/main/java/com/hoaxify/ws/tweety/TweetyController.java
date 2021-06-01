@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hoaxify.ws.shared.CurrentUser;
 import com.hoaxify.ws.shared.GenericResponse;
+import com.hoaxify.ws.tweety.vm.TweetySubmitVM;
 import com.hoaxify.ws.tweety.vm.TweetyVM;
 import com.hoaxify.ws.user.User;
 
@@ -34,7 +35,7 @@ public class TweetyController {
 	TweetyService tweetyService;
 	
 	@PostMapping("/tweeties")
-	GenericResponse saveTweety(@Valid @RequestBody Tweety tweety, @CurrentUser User user) {
+	GenericResponse saveTweety(@Valid @RequestBody TweetySubmitVM tweety, @CurrentUser User user) {
 		tweetyService.save(tweety, user);
 		return new GenericResponse("Tweety is saved");
 	}

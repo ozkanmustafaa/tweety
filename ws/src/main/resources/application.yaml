@@ -9,7 +9,7 @@ spring:
         persistence:
           validation:
             mode: none
-
+              servlet:    multipart:      max-file-size: 10MB        
 ---
 spring:
   profiles: production

@@ -5,31 +5,41 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.tika.Tika;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.hoaxify.ws.Configuration.AppConfiguration;
 
 @Service
+@EnableScheduling
 public class FileService {
 	
 	AppConfiguration appConfiguration;
 	
 	Tika tika;
+	
+	FileAttachmentRepository fileAttachmentRepository; 
 
-	public FileService(AppConfiguration appConfiguration) {
+	public FileService(AppConfiguration appConfiguration, FileAttachmentRepository fileAttachmentRepository) {
 		super();
 		this.appConfiguration = appConfiguration;
 		this.tika = new Tika();
+		this.fileAttachmentRepository = fileAttachmentRepository;
 	}
 	
 	public String writeBase64EncodedStringToFile(String image) throws IOException {
 		String fileName = generateRandomName();
-		File target = new File(appConfiguration.getUploadPath() + "/" + fileName);
+		File target = new File(appConfiguration.getProfileStoragePath() + "/" + fileName);
 		OutputStream outputStream = new FileOutputStream(target);
 		
 		byte[] base64encoded = Base64.getDecoder().decode(image);
@@ -43,19 +53,66 @@ public class FileService {
 		return UUID.randomUUID().toString().replaceAll("-", "");
 	}
 
-	public void deleteFile(String oldImageName) {
-		if(oldImageName == null) {
+	public void deleteProfileImage(String oldImageName) {
+		if (oldImageName == null) {
 			return;
 		}
+		deleteFile(Paths.get(appConfiguration.getProfileStoragePath(), oldImageName));
+	}
+	
+	public void deleteAttachmentFile(String oldImageName) {
+		if (oldImageName == null) {
+			return;
+		}
+		deleteFile(Paths.get(appConfiguration.getAttachmentStoragePath(), oldImageName));
+	}
+	
+	private void deleteFile(Path path) {
 		try {
-			Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(), oldImageName));
+			Files.deleteIfExists(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	public String detectType(String base64) {
+		byte[] base64encoded = Base64.getDecoder().decode(base64);
+		return detectType(base64encoded);
+	}
 
-	public String detectType(String value) {
-		byte[] base64encoded = Base64.getDecoder().decode(value);
-		return tika.detect(base64encoded);
+	public String detectType(byte[] arr) {
+		return tika.detect(arr);
+	}
+
+	public FileAttachment saveTweetyAttachment(MultipartFile multipartFile) {
+		String fileName = generateRandomName();
+		File target = new File(appConfiguration.getAttachmentStoragePath() + "/" + fileName);
+		String fileType = null;
+		try {
+			byte[] arr = multipartFile.getBytes();
+			OutputStream outputStream = new FileOutputStream(target);
+			outputStream.write(arr);
+			outputStream.close();
+			fileType = detectType(arr);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		FileAttachment attachment = new FileAttachment();
+		attachment.setName(fileName);
+		attachment.setDate(new Date());
+		attachment.setFileType(fileType);
+		return fileAttachmentRepository.save(attachment);
+	}
+	
+	@Scheduled(fixedRate = 24 * 60 * 60 * 1000)
+	public void cleanupStorage() {
+		Date twentyFourHoursAgo = new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000));
+		List<FileAttachment> filesToBeDeleted = fileAttachmentRepository.findByDateBeforeAndTweetyIsNull(twentyFourHoursAgo);
+		for(FileAttachment file: filesToBeDeleted) {
+			//delete file
+			deleteAttachmentFile(file.getName());
+			//delete from table
+			fileAttachmentRepository.deleteById(file.getId());
+		}
 	}
 }

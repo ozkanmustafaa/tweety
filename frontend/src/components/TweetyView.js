@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const TweetyView = (props) => {
     const {tweety} = props;
-    const {user, content, timestamp} = tweety;
+    const {user, content, timestamp, fileAttachment} = tweety;
     const {username, displayName, image} = user;
 
     const {i18n} = useTranslation()
@@ -26,9 +26,17 @@ const TweetyView = (props) => {
                 </Link>
             </div>
         </div>
-        <div className="pl-5">
-            {content} 
-        </div>
+        <div className="pl-5">{content}</div>
+        {fileAttachment && (
+            <div className="pl-5">
+                {fileAttachment.fileType.startsWith('image') && (
+                <img className="img-fluid" src={'images/attachments/' + fileAttachment.name} alt={content} />
+                )}
+                {!fileAttachment.fileType.startsWith('image') && (
+                    <strong>Tweety has unknown attachment</strong>
+                )}
+            </div>
+        )}
     </div>;
     ;
 };

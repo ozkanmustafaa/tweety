@@ -33,6 +33,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST, "/api/1.0/auth").authenticated()
 				.antMatchers(HttpMethod.PUT, "/api/1.0/users/{username}").authenticated()
 				.antMatchers(HttpMethod.POST, "/api/1.0/tweeties").authenticated()
+				.antMatchers(HttpMethod.POST, "/api/1.0/tweety-attachments").authenticated()
 			.and()
 			.authorizeRequests().anyRequest().permitAll();
 		

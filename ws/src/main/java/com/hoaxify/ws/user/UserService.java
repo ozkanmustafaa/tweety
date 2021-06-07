@@ -19,7 +19,7 @@ public class UserService {
 	PasswordEncoder passwordEncoder;
 	
 	FileService fileService;
-
+	
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, FileService fileService) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
@@ -60,5 +60,11 @@ public class UserService {
 			fileService.deleteProfileImage(oldImageName);
 		}
 		return userRepository.save(inDB);
+	}
+
+	public void deleteUser(String username) {
+		User inDB = userRepository.findByUsername(username);
+		fileService.deleteAllStoredFilesForUser(inDB);
+		userRepository.delete(inDB);
 	}
 }

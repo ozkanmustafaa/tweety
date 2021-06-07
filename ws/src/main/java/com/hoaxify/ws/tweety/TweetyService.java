@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.hoaxify.ws.file.FileAttachment;
 import com.hoaxify.ws.file.FileAttachmentRepository;
+import com.hoaxify.ws.file.FileService;
 import com.hoaxify.ws.tweety.vm.TweetySubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
@@ -22,12 +23,14 @@ public class TweetyService {
 	TweetyRepository tweetyRepository;
 	UserService userService;
 	FileAttachmentRepository fileAttachmentRepository;
+	FileService fileService;
 	
-	public TweetyService(TweetyRepository tweetyRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
+	public TweetyService(TweetyRepository tweetyRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService, UserService userService) {
 		super();
 		this.tweetyRepository = tweetyRepository;
-		this.userService = userService;
 		this.fileAttachmentRepository = fileAttachmentRepository;
+		this.fileService = fileService;
+		this.userService = userService;
 	}
 
 	public void save(TweetySubmitVM tweetySubmitVM, User user) {
@@ -98,4 +101,14 @@ public class TweetyService {
 			return criteriaBuilder.greaterThan(root.get("id"), id);
 		};
 	}
+
+	public void delete(long id) {
+		Tweety inDB = tweetyRepository.getOne(id);
+		if(inDB.getFileAttachment() != null) {
+			String fileName = inDB.getFileAttachment().getName();
+			fileService.deleteAttachmentFile(fileName);
+		}
+		tweetyRepository.deleteById(id);
+	}
 }
+

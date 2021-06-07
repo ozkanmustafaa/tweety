@@ -72,6 +72,13 @@ const TweetyFeed = () => {
         setNewTweetyCount(0);
     }
 
+    const onDeleteTweetySuccess = id => {
+        setTweetyPage(previousTweetyPage => ({
+            ...previousTweetyPage,
+            content: previousTweetyPage.content.filter(tweety => tweety.id != id)
+        }));
+    }
+
     const {content, last} = tweetyPage;
 
     if (content.length == 0){
@@ -88,7 +95,7 @@ const TweetyFeed = () => {
                 {loadNewTweetiesProgress ? <Spinner /> : t('There are new tweeties')}
             </div>)}
             {content.map(tweety => {
-                return <TweetyView key={tweety.id} tweety={tweety} />
+                return <TweetyView key={tweety.id} tweety={tweety} onDeleteTweety={onDeleteTweetySuccess} />
             })}
             {!last && (
                 <div 

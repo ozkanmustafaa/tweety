@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.hoaxify.ws.user.User;
+
 public interface FileAttachmentRepository extends JpaRepository<FileAttachment, Long> {
 
 	List<FileAttachment> findByDateBeforeAndTweetyIsNull(Date date);
+	
+	List<FileAttachment> findByTweetyUser(User user);
 	
 }

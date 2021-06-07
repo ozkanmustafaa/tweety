@@ -26,7 +26,11 @@ i18n.use(initReactI18next).init({
                 'My Profile': 'My Profile',
                 'There are no tweeties': 'There are no tweeties',
                 'Load old tweeties': 'Load old tweeties',
-                'There are new tweeties': 'There are new tweeties'
+                'There are new tweeties': 'There are new tweeties',
+                'Delete Tweety': 'Delete Tweety',
+                'Are you sure to delete tweety?': 'Are you sure to delete tweety?',
+                'Delete My Account': 'Delete My Account',
+                'Are you sure to delete your account?': 'Are you sure to delete your account?'
             }
         },
         tr: {
@@ -51,7 +55,11 @@ i18n.use(initReactI18next).init({
                 'My Profile': 'Hesabım',
                 'There are no tweeties': 'Tweety bulunamadı',
                 'Load old tweeties': 'Eski tweetyleri getir',
-                'There are new tweeties': 'Yeni tweetyler var'
+                'There are new tweeties': 'Yeni tweetyler var',
+                'Delete Tweety': `Tweety'i sil`,
+                'Are you sure to delete tweety?': `Tweety'i silmek istediğinizden emin misiniz?`,
+                'Delete My Account': 'Hesabımı Sil',
+                'Are you sure to delete your account?': 'Hesabınızı silmek istediğinizden emin misiniz?'
             }
         }
     },

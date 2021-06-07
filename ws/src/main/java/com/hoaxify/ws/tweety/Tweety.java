@@ -34,7 +34,7 @@ public class Tweety {
 	@ManyToOne
 	private User user;
 	
-	@OneToOne(mappedBy = "tweety")
+	@OneToOne(mappedBy = "tweety", orphanRemoval = true)
 	private FileAttachment fileAttachment;
 	
 }
